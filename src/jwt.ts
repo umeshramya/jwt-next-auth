@@ -2,7 +2,7 @@
 
 import jwt from "jsonwebtoken"
 import Cookies from "cookies"
-import {NextApiResponse, NextApiRequest, NextApiHandler} from "next"
+import {NextApiResponse, NextApiRequest, NextApiHandler, NextPageContext} from "next"
 
 
 const SECRET_AUTH = process.env.SECRET_AUTH || "ramya darling"
@@ -62,14 +62,22 @@ const jwtverify = (token:string) =>{
 }
 
 
-// const IsPageLogged = (ctx)=>{
-//     return new Promise((resolve, reject)=>{
-//         let {token }= cookie.parse(ctx.req.headers.cookie);
-//         jwtverify(token).then(result =>{resolve(result)}).catch(err =>{reject(err)});
- 
+const IsPageLogged = (req:NextApiRequest, res:NextApiResponse)=>{
+  
+    return new Promise((resolve, reject)=>{
+        let cookies = new Cookies(req, res)
+        let token = cookies.get("token")
+        if(token === undefined){
+            reject("invalid login")
+        }else{
+            jwtverify(token)
+            .then(result =>{resolve(result)})
+            .catch(err =>{reject(err)});
+        }
+        
             
-//     })
-// }
+    })
+}
 
 
 
@@ -101,4 +109,4 @@ const setJwtTokenCookie = (token:string, req:NextApiRequest, res:NextApiResponse
     
 }
 
-module.exports = {jwtSign, jwtverify,  validateUser, jwtTokenCreate}
+export  {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate}
