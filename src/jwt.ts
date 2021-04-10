@@ -5,7 +5,7 @@ import Cookies from "cookies"
 import {NextApiResponse, NextApiRequest, NextApiHandler, NextPageContext} from 'next'
 
 
-const SECRET_AUTH = process.env.SECRET_AUTH || "ramya darling"
+const Secret_Auth = process.env.SECRET_AUTH || "ramya darling"
 
 
 /**
@@ -19,7 +19,7 @@ const jwtSign = (payload:{},req:NextApiRequest, res:NextApiResponse)=>{
     // this fun is for only creating login jwt 
     
         return new Promise((resolve, reject)=>{
-            jwt.sign(payload, SECRET_AUTH, { expiresIn: '1d' }, (err, token)=>{
+            jwt.sign(payload, Secret_Auth, { expiresIn: '1d' }, (err, token)=>{
                 if(err){
                     reject(err)
                 }else if (token === undefined){
@@ -45,11 +45,11 @@ const jwtSign = (payload:{},req:NextApiRequest, res:NextApiResponse)=>{
  */
 const jwtTokenCreate = (payload:{})=>{
     return new Promise((resolve, reject)=>{
-        jwt.sign(payload, SECRET_AUTH, { expiresIn: '1d' }, (err, token)=>{
+        jwt.sign(payload, Secret_Auth, { expiresIn: '1d' }, (err, token)=>{
             if(err){
                 reject(err)
-            }else if(token === undefined){
-                reject('invalid payload')
+            }else if (token === undefined){
+                reject("token is undefined")
             }else{
                 resolve(token)
             }
@@ -68,7 +68,7 @@ const jwtTokenCreate = (payload:{})=>{
 const jwtverify = (token:string) =>{
     // this verify the token
     return new Promise((resolve, reject)=>{
-        jwt.verify(token, SECRET_AUTH, (err, decoded:any)=>{
+        jwt.verify(token, Secret_Auth, (err, decoded:any)=>{
             if(err){
                 reject(false)
             }else if(decoded === undefined){
@@ -85,7 +85,7 @@ const jwtverify = (token:string) =>{
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest
  * @param res NextApiResponse
- * @returns new Promise which verify the token. it resolves with success  or reject or rejects on failure
+ * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
 const IsPageLogged = (req:NextApiRequest, res:NextApiResponse)=>{
   

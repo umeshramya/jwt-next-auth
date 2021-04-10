@@ -5,7 +5,7 @@ function ProtectedRoute() {
     return (
         <FormDelete
             id="1"
-            curUri = "api/protected-route"
+            curUri = "api/validate-user-route"
             onSuccess = {(res)=>  res.data.mes}
             onError = {err=>err.response.data}
         />

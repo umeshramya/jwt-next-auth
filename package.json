@@ -1,6 +1,6 @@
 {
   "name": "jwt-next-auth",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is for next.js app to be used as jwt authratzation",
   "main": "lib/index.js",
   "types": "lib",
@@ -8,7 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
     "dev": "npm run build && yalc publish && cd examples/test && yalc update && npm run dev"
-
   },
   "repository": {
     "type": "git",
