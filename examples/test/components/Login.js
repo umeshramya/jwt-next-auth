@@ -28,8 +28,8 @@ function Login() {
                         curUri="/api/login"
                         curObj = {InputObj}
                         reset = {()=>setInputObj(initialState)}
-                        onSuccess={(r)=>console.log(r.data.mes)}
-                        onError = {(er)=>console.log(er.response.data)}
+                        onSuccess={(r)=>r.data.mes}
+                        onError = {er=>er.response.data}
 
                     />
                 </Col>
