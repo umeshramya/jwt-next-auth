@@ -1,4 +1,4 @@
-import {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate} from "./jwt"
+import {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout} from "./jwt"
 
 
-export {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate}
+export {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate , logout}

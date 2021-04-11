@@ -144,4 +144,14 @@ const setJwtTokenCookie = (token:string, req:NextApiRequest, res:NextApiResponse
     
 }
 
-export  {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate}
+/**
+ * Thi s ;logout by seting token value to ""
+ * @param req NextApiRequest
+ * @param res NextApiResponse
+ */
+const logout = (req:NextApiRequest, res:NextApiResponse)=>{
+    let cookies =  new Cookies(req, res);
+    cookies.set("token", "");
+}
+
+export  {jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout}

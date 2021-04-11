@@ -34,5 +34,11 @@ declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse) => Promi
  * @param next next function called
  */
 declare const validateUser: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate };
+/**
+ * Thi s ;logout by seting token value to ""
+ * @param req NextApiRequest
+ * @param res NextApiResponse
+ */
+declare const logout: (req: NextApiRequest, res: NextApiResponse) => void;
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout };
 //# sourceMappingURL=jwt.d.ts.map

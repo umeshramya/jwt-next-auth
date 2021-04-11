@@ -4,6 +4,7 @@ import Login from "../components/Login"
 import ValidateUser from "../components/ValidateUser"
 import CreateToken from "../components/CreateToken"
 import {IsPageLogged} from "jwt-next-auth"
+import Logout from "../components/Logout"
 
 export default function Home(props) {
   return (
@@ -12,6 +13,7 @@ export default function Home(props) {
    <Login />
    <ValidateUser/>
    <CreateToken />
+   <Logout/>
    </>
   )
 }
