@@ -1,7 +1,11 @@
-# jwt-next-auth
+# jwt-next-
+[![Generic badge](https://img.shields.io/badge/<Version 1.0.4>-<License ISC>-<COLOR>.svg)](https://shields.io/)
 This module is used for creating jwt based auth in your next js application
 
 To set SECRET_AUTH (consumed by jasonwebtoken). please set environmental variable SECRET_AUTH 
+
+To check the implimentation of the module please check from example/test folder from out github repo
+https://github.com/umeshramya/jwt-next-auth.git
 
 This has following API end points
 1. jwtSign                  This is for sign in
