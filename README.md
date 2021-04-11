@@ -1,13 +1,13 @@
 # jwt-next-auth
-This module is used for v=creating jwt based auth in your next js application
+This module is used for creating jwt based auth in your next js application
 
-To set SECRET_AUTH (consumed bny jasonwebtoken)key please set environmental variable SECRET_AUTH 
+To set SECRET_AUTH (consumed by jasonwebtoken). please set environmental variable SECRET_AUTH 
 
 This has following API end points
 1. jwtSign                  This is for sign in
-2. IsPageLogged             This is passed in getSrrverSideProps method with resolved promise on valied jwttoken of signin  else reject promise 
+2. IsPageLogged             This is passed in getServerSideProps method with resolved promise on valied jasonwebtoken of signin  else reject promise 
 3. validateUser             This is used to check the user for subesuqent protected routes
-4. jwtTokenCreate          With this one can create new token for other uses in appilcatoin
+4. jwtTokenCreate           With this one can create new token for other uses in your application appilcatoin
 5. logout                   This sets token of signin "" thus user is logged out
 6. jwtverify                Helper function to check jsonwebtoken
 
