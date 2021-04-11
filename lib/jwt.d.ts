@@ -24,7 +24,7 @@ declare const jwtverify: (token: string) => Promise<unknown>;
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest
  * @param res NextApiResponse
- * @returns new Promise which verify the token. it resolves with success  or reject or rejects on failure
+ * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
 declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
 /**

@@ -85,21 +85,19 @@ const jwtverify = (token:string) =>{
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest
  * @param res NextApiResponse
- * @nextResolve This is function to be called on promise  resolve
- * @nextREject this is the function to be called on rjection of promise
  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
-const IsPageLogged = (req:NextApiRequest, res:NextApiResponse, nextResolve=()=>true, nextReject=()=>false)=>{
+const IsPageLogged = (req:NextApiRequest, res:NextApiResponse)=>{
      
     return new Promise((resolve, reject)=>{
         let cookies = new Cookies(req, res)
         let token = cookies.get("token")
         if(token === undefined){
-            reject(nextReject())
+            reject("Undefined Token")
         }else{
             jwtverify(token)
-            .then(result =>nextResolve())
-            .catch(err =>{reject(nextReject())});
+            .then(result =>resolve(result))
+            .catch(err =>{reject(err)});
         }
         
             

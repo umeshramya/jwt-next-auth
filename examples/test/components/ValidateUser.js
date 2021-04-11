@@ -1,15 +1,32 @@
-import React from 'react'
-import {FormDelete} from "reactstrap-react-lib"
+import React, {useState} from 'react'
+import {FormSubmit} from "reactstrap-react-lib"
+import {Container, Row, Col, Input, FormGroup, Label} from "reactstrap"
 
-function ProtectedRoute() {
+function ValidateUser() {
+    let init={name:""}
+    const [InputObj, setInputObj]=useState(init)
     return (
-        <FormDelete
-            id="1"
-            curUri = "api/validate-user-route"
-            onSuccess = {(res)=>  res.data.mes}
-            onError = {err=>err.response.data}
-        />
+        <>
+        <h3>Validate User</h3>
+            <FormSubmit
+                Inputs={
+                    <>
+                     <FormGroup>
+                         <Label>Submit succeessful for only variefied user</Label>
+                         <Input type="text" value={InputObj.name} onChange = {e=>setInputObj({name : e.target.value})}/>
+                     </FormGroup>
+                    </>
+                }
+                curObj={InputObj}
+                curUri={"/api/validate-user"}
+                onSuccess={e=>e.data.mes}
+                onError={e=>e.response.data}
+
+
+            />
+
+        </>
     )
 }
 
-export default ProtectedRoute
+export default ValidateUser
