@@ -111,7 +111,7 @@ const IsPageLogged = (req:NextApiRequest, res:NextApiResponse)=>{
  * @param res NextApiResponse
  * @param next next function called 
  */
-const validateUser = async(req:NextApiRequest, res:NextApiResponse, next?:Function)=>{
+const validateUser = async(req:NextApiRequest, res:NextApiResponse)=>{
     // this is middle were to validate user cretanay=tials
     // return false if not logged in 
   
@@ -123,9 +123,7 @@ const validateUser = async(req:NextApiRequest, res:NextApiResponse, next?:Functi
            req.body.pemrAuth = await jwtverify(token).then(result => result)
 
         }
-        if(next !== undefined){
-            next();
-        }
+
         
 
     

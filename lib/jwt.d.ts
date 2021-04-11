@@ -33,6 +33,6 @@ declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse) => Promi
  * @param res NextApiResponse
  * @param next next function called
  */
-declare const validateUser: (req: NextApiRequest, res: NextApiResponse, next?: Function | undefined) => Promise<void>;
+declare const validateUser: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate };
 //# sourceMappingURL=jwt.d.ts.map
