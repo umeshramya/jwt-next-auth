@@ -1,6 +1,6 @@
 {
   "name": "jwt-next-auth",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "This is for next.js app to be used as jwt authratzation",
   "main": "lib/index.js",
   "types": "lib",
@@ -25,9 +25,11 @@
   },
   "homepage": "https://github.com/umeshramya/jwt-next-auth#readme",
   "peerDependencies": {
-    "cookies": "^0.8.0",
-    "jsonwebtoken": "^8.5.1",
     "next": "^10.1.3"
+  },
+  "dependencies": {
+    "cookies": "^0.8.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "@types/cookie": "^0.4.0",
