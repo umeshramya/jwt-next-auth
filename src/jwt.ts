@@ -41,11 +41,12 @@ const jwtSign = (payload:{},req:NextApiRequest, res:NextApiResponse)=>{
  * Helper function for creating jsonweb token usin AUTH_SECRET environmental variable
  * This can be used to create new json token from client application apart sign in token
  * @param payload payload is object for creation of jsonwebtoken
+ * @validateDays Number of days token is valid
  * @returns returns a promise with resolveble jsonwebtoken 
  */
-const jwtTokenCreate = (payload:{})=>{
+const jwtTokenCreate = (payload:{}, validateDays:number=1)=>{
     return new Promise((resolve, reject)=>{
-        jwt.sign(payload, Secret_Auth, { expiresIn: '1d' }, (err, token)=>{
+        jwt.sign(payload, Secret_Auth, { expiresIn: `${validateDays}d` }, (err, token)=>{
             if(err){
                 reject(err)
             }else if (token === undefined){
