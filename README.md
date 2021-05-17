@@ -1,4 +1,4 @@
-# jwt-next-
+# jwt-next-Auth
 
 This module is used for creating jwt based auth in your next js application
 
