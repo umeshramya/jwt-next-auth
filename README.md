@@ -13,6 +13,7 @@ This has following API end points
 3. validateUser             This is used to check the user for subesuqent protected routes
 4. jwtTokenCreate           With this one can create new token for other uses in your application appilcatoin
 5. logout                   This sets token of signin "" thus user is logged out
+6. Protected route          This is closer for routes of api allowing roles as string of array passed and route function as argument see code below
 6. jwtverify                Helper function to check jsonwebtoken
 
 
@@ -128,7 +129,7 @@ const route = (req, res)=>{
 export default route
 ```
 
-### potected route code
+### protected route code
 ```javascript
 // this routes are inside api folder of pages of next js app
 import { protectedRouteMaster} from "jwt-next-auth"
