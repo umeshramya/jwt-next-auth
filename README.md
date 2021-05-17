@@ -12,9 +12,11 @@ This has following API end points
 2. IsPageLogged             This is passed in getServerSideProps method with resolved promise on valied jasonwebtoken of signin  else reject promise 
 3. validateUser             This is used to check the user for subesuqent protected routes
 4. jwtTokenCreate           With this one can create new token for other uses in your application appilcatoin
-5. logout                   This sets token of signin "" thus user is logged out
+5. Login route              example of login route in next
 6. Protected route          This is closer for routes of api allowing roles as string of array passed and route function as argument see code below
-6. jwtverify                Helper function to check jsonwebtoken
+7. logout                   This sets token of signin "" thus user is logged out
+
+8. jwtverify                Helper function to check jsonwebtoken
 
 
 ### jwrSign
@@ -111,6 +113,51 @@ const route = async(req, res)=>{
 export default route;
 ```
 
+### Login route of next
+```javascript
+
+import {jwtSign} from "jwt-next-auth"
+
+const route = async(req, res) => {
+  try {
+    let payload = req.body;
+    //write code check from data base usernam and pasword
+    // then add role property for the payload most ofetn dervied from database
+    payload.role = "admin"// real world application this comes from database of users
+    let result = await jwtSign(payload, req , res).then(res=>res);
+
+    res.status(200).json({mes : result})
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+```
+
+
+
+### Protected route code
+```javascript
+// this routes are inside api folder of pages of next js app
+import { protectedRouteMaster} from "jwt-next-auth"
+
+
+const route = async(req, res, body, auth) => {
+    try {
+        console.log("body", body)//access body requet
+        console.log("auth", auth)//access auth body from here
+        res.status(200).json({mes:"varied user"})
+        
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+
+//array of strings second arguments it extrcts the role of payload set durring the login route see above
+export default protectedRouteMaster(route, ["admin", "editor"])
+```
+
+
 
 ### logout
 in your route
@@ -129,32 +176,12 @@ const route = (req, res)=>{
 export default route
 ```
 
-### protected route code
-```javascript
-// this routes are inside api folder of pages of next js app
-import { protectedRouteMaster} from "jwt-next-auth"
-
-
-const route = async(req, res, body, auth) => {
-    try {
-        console.log("body", body)//access body requet
-        console.log("auth", auth)//access auth body from here
-        res.status(200).json({mes:"varied user"})
-        
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
-
-
-
-export default protectedRouteMaster(route, ["admin", "editor"])
-```
-
 
 ### jwtverify
 in you api routes
+async method
 ```javascript
+jwtverify(tokren)
 
 ```
 

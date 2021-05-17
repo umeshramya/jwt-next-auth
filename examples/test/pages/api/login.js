@@ -1,10 +1,14 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+
 import {jwtSign} from "jwt-next-auth"
 
 const route = async(req, res) => {
   try {
-    let result = await jwtSign(req.body, req , res).then(res=>res);
-    console.log(req.body)
+    let payload = req.body;
+    //write code check from data base usernam and pasword
+    // then add role property for the payload most ofetn dervied from database
+    payload.role = "admin"// real world application this comes from database of users
+    let result = await jwtSign(payload, req , res).then(res=>res);
+
     res.status(200).json({mes : result})
   } catch (error) {
     res.status(500).send(error)

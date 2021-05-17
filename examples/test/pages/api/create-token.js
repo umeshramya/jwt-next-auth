@@ -1,8 +1,14 @@
-import {jwtTokenCreate} from "jwt-next-auth"
+
+import {jwtTokenCreate, jwtverify} from "jwt-next-auth"
+import { result } from "lodash";
 
 const route = async(req, res)=>{
     try {
-         let token = await jwtTokenCreate(req.body).then(r=>r)
+
+        let payload = req.body;
+        payload.role = "admin"// real world application this comes from database of users
+
+         let token = await jwtTokenCreate(payload).then(r=>r)
          res.status(200).json({mes:token})
     } catch (error) {
         res.status(500).send(error)
@@ -11,3 +17,4 @@ const route = async(req, res)=>{
 
 
 export default route;
+
