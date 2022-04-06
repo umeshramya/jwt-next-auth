@@ -27,7 +27,14 @@ declare const jwtverify: (token: string) => Promise<unknown>;
  * @param res NextApiResponse
  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
-declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse, currentRole?: string, permittedRoles?: string[]) => Promise<unknown>;
+declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
+/**
+ * check the the perrmited role
+ * @param currentRole  current role
+ * @param rolesarray array of permitted roles
+ * @returns boolean
+ */
+declare const checkRoles: (currentRole: string, roles: string[]) => boolean;
 /**
  * This forvaldating user
  * @param req NextApiRequest
@@ -41,5 +48,5 @@ declare const validateUser: (req: NextApiRequest, res: NextApiResponse) => Promi
  * @param res NextApiResponse
  */
 declare const logout: (req: NextApiRequest, res: NextApiResponse) => void;
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout };
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles };
 //# sourceMappingURL=jwt.d.ts.map
