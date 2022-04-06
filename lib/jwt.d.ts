@@ -27,7 +27,7 @@ declare const jwtverify: (token: string) => Promise<unknown>;
  * @param res NextApiResponse
  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
-declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
+declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse, currentRole?: string, permittedRoles?: string[]) => Promise<unknown>;
 /**
  * This forvaldating user
  * @param req NextApiRequest
