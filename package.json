@@ -1,6 +1,6 @@
 {
   "name": "jwt-next-auth",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "This is for next.js app to be used as jwt authratzation",
   "main": "lib/index.js",
   "types": "lib",

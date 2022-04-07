@@ -95,7 +95,7 @@ const IsPageLogged = (req: NextApiRequest, res: NextApiResponse) => {
         let token = cookies.get("token")
         if (token === undefined) {
             reject("Undefined Token")
-        }else {
+        } else {
             jwtverify(token)
                 .then(result => resolve(result))
                 .catch(err => { reject(err) });
@@ -111,10 +111,10 @@ const IsPageLogged = (req: NextApiRequest, res: NextApiResponse) => {
  * @param rolesarray array of permitted roles
  * @returns boolean
  */
-const checkRoles = (currentRole:string , roles:string[]):boolean=>{
-    if(roles.indexOf(currentRole) < 0){
+const checkRoles = (currentRole: string, roles: string[]): boolean => {
+    if (roles.indexOf(currentRole) < 0) {
         return false
-    }else{
+    } else {
         return true
     }
 }
@@ -155,7 +155,7 @@ const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiRespo
     cookies.set("token", token, {
         httpOnly: true,
         sameSite: true,
-        secure: process.env.NODE_ENV === "development" ? false : true
+        // secure: process.env.NODE_ENV === "development" ? false : true
     })
 
 }
@@ -170,4 +170,4 @@ const logout = (req: NextApiRequest, res: NextApiResponse) => {
     cookies.set("token", "");
 }
 
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout , checkRoles}
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles }
