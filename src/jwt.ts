@@ -155,7 +155,7 @@ const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiRespo
     cookies.set("token", token, {
         httpOnly: true,
         sameSite: true,
-        secure: process.env.NODE_ENV === "development" ? false : true
+        // secure: process.env.NODE_ENV === "development" ? false : true
     })
 
 }
