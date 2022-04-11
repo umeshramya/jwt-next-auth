@@ -1,4 +1,4 @@
-import { NextApiResponse, NextApiRequest } from 'next';
+import { NextApiResponse, NextApiRequest } from "next";
 /**
  * This is function for signing in the user and setting up the cookie of jwt using environemntal variable SECRET_AUTH
  * @param payload this is payload that has to given for creating json web token it will contain values to be utlized in subsequent request
@@ -43,10 +43,16 @@ declare const checkRoles: (currentRole: string, roles: string[]) => boolean;
  */
 declare const validateUser: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 /**
+ * Helper function for setting cookie
+ * @param token This the content of cookie with key of token
+ * @param req NextApiRequest
+ * @param res NextApiResponse
+ */
+/**
  * Thi s ;logout by seting token value to ""
  * @param req NextApiRequest
  * @param res NextApiResponse
  */
 declare const logout: (req: NextApiRequest, res: NextApiResponse) => void;
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles };
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, };
 //# sourceMappingURL=jwt.d.ts.map
