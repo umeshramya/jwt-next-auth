@@ -18,7 +18,8 @@ const protectedRouteMaster = (route:Function, permitedRoles?:string[])=>{
 
     return async (req:NextApiRequest, res:NextApiResponse)=>{
         if(process.env.LOG_REQUEST == "true"){
-            console.log(JSON.stringify(req))
+            console.log("headers" ,JSON.stringify(req.headers))
+            console.log("body", JSON.stringify(req.body))
         }
             let statusCode = 500;
         try {
