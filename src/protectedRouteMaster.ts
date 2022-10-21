@@ -16,6 +16,9 @@ import _ from "lodash"
  */
 const protectedRouteMaster = (route:Function, permitedRoles?:string[])=>{
     return async (req:NextApiRequest, res:NextApiResponse)=>{
+        if(process.env.LOG_REQUEST == "true"){
+            console.log(JSON.stringify(req))
+        }
             let statusCode = 500;
         try {
             await validateUser(req, res).then(r=>r);
