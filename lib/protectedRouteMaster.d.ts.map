@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":3,"file":"protectedRouteMaster.d.ts","sourceRoot":"","sources":["../src/protectedRouteMaster.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,cAAc,EAAE,eAAe,EAAE,MAAM,MAAM,CAAA;AAKtD;;;;;;;GAOG;AACH,QAAA,MAAM,oBAAoB,UAAU,QAAQ,iDAEtB,cAAc,OAAM,eAAe,kBA0BxD,CAAA;AAED,eAAe,oBAAoB,CAAC"}
+=======
+{"version":3,"file":"protectedRouteMaster.d.ts","sourceRoot":"","sources":["../src/protectedRouteMaster.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,cAAc,EAAE,eAAe,EAAE,MAAM,MAAM,CAAA;AAKtD;;;;;;;GAOG;AACH,QAAA,MAAM,oBAAoB,UAAU,QAAQ,iDACtB,cAAc,OAAM,eAAe,kBAyBxD,CAAA;AAED,eAAe,oBAAoB,CAAC"}
+>>>>>>> dev

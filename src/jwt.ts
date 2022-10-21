@@ -88,17 +88,14 @@ const jwtverify = (token: string) => {
  * @param res NextApiResponse
  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
-const IsPageLogged = (req: NextApiRequest, res: NextApiResponse, currentRole: string = "", permittedRoles: string[] = [""]) => {
+const IsPageLogged = (req: NextApiRequest, res: NextApiResponse) => {
 
     return new Promise((resolve, reject) => {
         let cookies = new Cookies(req, res)
         let token = cookies.get("token")
         if (token === undefined) {
             reject("Undefined Token")
-        } else if (permittedRoles.indexOf(currentRole) < 0) {
-            reject("Forbidden from viewing this page")
-        }
-        else {
+        } else {
             jwtverify(token)
                 .then(result => resolve(result))
                 .catch(err => { reject(err) });
@@ -106,6 +103,20 @@ const IsPageLogged = (req: NextApiRequest, res: NextApiResponse, currentRole: st
 
 
     })
+}
+
+/**
+ * check the the perrmited role
+ * @param currentRole  current role 
+ * @param rolesarray array of permitted roles
+ * @returns boolean
+ */
+const checkRoles = (currentRole: string, roles: string[]): boolean => {
+    if (roles.indexOf(currentRole) < 0) {
+        return false
+    } else {
+        return true
+    }
 }
 
 
@@ -144,7 +155,7 @@ const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiRespo
     cookies.set("token", token, {
         httpOnly: true,
         sameSite: true,
-        secure: process.env.NODE_ENV === "development" ? false : true
+        // secure: process.env.NODE_ENV === "development" ? false : true
     })
 
 }
@@ -159,4 +170,4 @@ const logout = (req: NextApiRequest, res: NextApiResponse) => {
     cookies.set("token", "");
 }
 
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout }
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles }
