@@ -11,9 +11,10 @@ import _ from "lodash";
  * @<return> is type of return the inner function gives
  * @param route This route function in api directory of page
  * @param permitedRoles arraay role who have access for this route
+ * @authVerify : this is callback function accepts the auth object as argument (auth is the one which you put in JWT payload this is optional)
  * @returns route function which is used in api of next
  */
-const protectedRouteMaster = (route: Function, permitedRoles?: string[]) => {
+const protectedRouteMaster = (route: Function, permitedRoles?: string[], authVerify?:(auth:{})=>Promise<boolean>) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     if (process.env.LOG_REQUEST == "true") {
       console.log("headers", JSON.stringify(req.headers));
@@ -26,6 +27,13 @@ const protectedRouteMaster = (route: Function, permitedRoles?: string[]) => {
 
       let auth = _.pick(req.body, "pemrAuth").pemrAuth;
       console.log("auth",JSON.stringify(auth));
+      if(authVerify){
+        const verified:boolean = await authVerify(auth)
+        if(!verified){
+          statusCode = 403;
+          throw (new Error().message = "Forbidden");
+        }
+      }
 
       if (permitedRoles !== undefined) {
         if (permitedRoles.indexOf(auth.role) < 0) {
