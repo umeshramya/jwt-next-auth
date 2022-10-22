@@ -26,7 +26,9 @@ const protectedRouteMaster = (route: Function, permitedRoles?: string[], authVer
       let body = _.omit(req.body, "pemrAuth");
 
       let auth = _.pick(req.body, "pemrAuth").pemrAuth;
-      console.log("auth",JSON.stringify(auth));
+      if (process.env.LOG_REQUEST == "true") {
+        console.log("auth",JSON.stringify(auth));
+      }
       if(authVerify){
         const verified:boolean = await authVerify(auth)
         if(!verified){
