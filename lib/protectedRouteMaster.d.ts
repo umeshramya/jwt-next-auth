@@ -8,6 +8,6 @@ import { NextApiRequest, NextApiResponse } from "next";
  * @authVerify : this is callback function accepts the auth object as argument (auth is the one which you put in JWT payload this is optional)
  * @returns route function which is used in api of next
  */
-declare const protectedRouteMaster: (route: Function, permitedRoles?: string[] | undefined, authVerify?: ((auth: {}) => Promise<boolean>) | undefined) => (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+declare const protectedRouteMaster: (route: Function, permitedRoles?: string[] | undefined, authVerify?: ((auth: {}, req?: NextApiRequest | undefined, res?: NextApiResponse<any> | undefined) => Promise<boolean>) | undefined) => (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 export default protectedRouteMaster;
 //# sourceMappingURL=protectedRouteMaster.d.ts.map
