@@ -82,28 +82,64 @@ const jwtverify = (token: string) => {
     })
 }
 
+
 /**
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest
  * @param res NextApiResponse
+ * @param validateSessionByUuid:Function check session function return true or false
  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
-const IsPageLogged = (req: NextApiRequest, res: NextApiResponse) => {
+const IsPageLogged = async(req: NextApiRequest, res: NextApiResponse, validateSessionByUuid:Function) => {
+    let cookies = new Cookies(req, res)
+    let token = cookies.get("token")
+    let auth:any;
+    if (token === undefined) {
+        auth = false
+    }else{
+        auth = await jwtverify(token)
+    }
 
-    return new Promise((resolve, reject) => {
-        let cookies = new Cookies(req, res)
-        let token = cookies.get("token")
-        if (token === undefined) {
-            reject("Undefined Token")
-        } else {
-            jwtverify(token)
-                .then(result => resolve(result))
-                .catch(err => { reject(err) });
+if(validateSessionByUuid){
+    if(auth != false){
+        const validateSession = await validateSessionByUuid(auth, req, res)
+        if(!validateSession){
+            auth = false
         }
-
-
+    } 
+}  
+    return new Promise((resolve, reject)=>{
+        if(auth){
+            resolve(auth)
+        }else{
+            reject("Undefined Token")
+        }
     })
 }
+
+
+// /**
+//  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
+//  * @param req NextApiRequest
+//  * @param res NextApiResponse
+//  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
+//  */
+// const IsPageLogged = (req: NextApiRequest, res: NextApiResponse) => {
+
+//     return new Promise((resolve, reject) => {
+//         let cookies = new Cookies(req, res)
+//         let token = cookies.get("token")
+//         if (token === undefined) {
+//             reject("Undefined Token")
+//         } else {
+//             jwtverify(token)
+//                 .then(result => resolve(result))
+//                 .catch(err => { reject(err) });
+//         }
+
+
+//     })
+// }
 
 /**
  * check the the perrmited role

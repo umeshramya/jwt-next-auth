@@ -25,9 +25,10 @@ declare const jwtverify: (token: string) => Promise<unknown>;
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest
  * @param res NextApiResponse
+ * @param validateSessionByUuid:Function check session function return true or false
  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
  */
-declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
+declare const IsPageLogged: (req: NextApiRequest, res: NextApiResponse, validateSessionByUuid: Function) => Promise<unknown>;
 /**
  * check the the perrmited role
  * @param currentRole  current role
