@@ -1,5 +1,17 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 /**
+ * Encrypts text using AES-256-CBC
+ * @param {string} text - Text to encrypt
+ * @returns {string} - Encrypted text in base64 format
+ */
+declare function encrypt(text: string): string;
+/**
+ * Decrypts text using AES-256-CBC
+ * @param {string} encryptedText - Text to decrypt
+ * @returns {string} - Decrypted text in utf-8 format
+ */
+declare function decrypt(encryptedText: string): string;
+/**
  * This is function for signing in the user and setting up the cookie of jwt using environemntal variable SECRET_AUTH
  * @param payload this is payload that has to given for creating json web token it will contain values to be utlized in subsequent request
  * @param req This is req from NextApiRequest
@@ -20,7 +32,7 @@ declare const jwtTokenCreate: (payload: {}, validateDays?: number) => Promise<un
  * @param token jsonwebtoen to be  veriied using SECRET_AUTH environmental variaable
  * @returns returns new promise with resolvable decoded.token
  */
-declare const jwtverify: (token: string) => Promise<unknown>;
+declare const jwtverify: (encryptedToken: any) => Promise<unknown>;
 /**
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest
@@ -49,5 +61,5 @@ declare const validateUser: (req: NextApiRequest, res: NextApiResponse) => Promi
  * @param res NextApiResponse
  */
 declare const logout: (req: NextApiRequest, res: NextApiResponse) => void;
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles };
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt };
 //# sourceMappingURL=jwt.d.ts.map

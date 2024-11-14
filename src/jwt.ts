@@ -3,9 +3,41 @@
 import jwt from "jsonwebtoken"
 import Cookies from "cookies"
 import { NextApiResponse, NextApiRequest, NextApiHandler, NextPageContext } from 'next'
+import crypto from "crypto";
+
 
 
 const Secret_Auth = process.env.SECRET_AUTH || "ramya darling"
+
+
+// Generate a random key and initialization vector (IV)
+const key = crypto.randomBytes(32); // 256-bit key for AES-256
+const iv = crypto.randomBytes(16); // 16 bytes for AES-CBC
+
+/**
+ * Encrypts text using AES-256-CBC
+ * @param {string} text - Text to encrypt
+ * @returns {string} - Encrypted text in base64 format
+ */
+function encrypt(text:string): string {
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return encrypted;
+}
+
+/**
+ * Decrypts text using AES-256-CBC
+ * @param {string} encryptedText - Text to decrypt
+ * @returns {string} - Decrypted text in utf-8 format
+ */
+function decrypt(encryptedText:string): string {
+    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+    let decrypted = decipher.update(encryptedText, 'base64', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+}
+
 
 
 /**
@@ -66,21 +98,39 @@ const jwtTokenCreate = (payload: {}, validateDays: number = 1) => {
  * @param token jsonwebtoen to be  veriied using SECRET_AUTH environmental variaable
  * @returns returns new promise with resolvable decoded.token
  */
-const jwtverify = (token: string) => {
-    // this verify the token
+// const jwtverify = (token: string) => {
+//     // this verify the token
+//     return new Promise((resolve, reject) => {
+//         jwt.verify(token, Secret_Auth, (err, decoded: any) => {
+//             if (err) {
+//                 reject(false)
+//             } else if (decoded === undefined) {
+//                 reject('invalid token')
+//             } else {
+//                 decoded.token = token
+//                 resolve(decoded)
+//             }
+//         })
+//     })
+// }
+
+
+const jwtverify = (encryptedToken: any) => {
+    const token:any = decrypt(encryptedToken);
     return new Promise((resolve, reject) => {
-        jwt.verify(token, Secret_Auth, (err, decoded: any) => {
+        jwt.verify(token, Secret_Auth, (err: any, decoded: any) => {
             if (err) {
-                reject(false)
+                reject(false);
             } else if (decoded === undefined) {
-                reject('invalid token')
+                reject('invalid token');
             } else {
-                decoded.token = token
-                resolve(decoded)
+                decoded.token = token;
+                resolve(decoded);
             }
-        })
-    })
-}
+        });
+    });
+};
+
 
 
 /**
@@ -92,12 +142,12 @@ const jwtverify = (token: string) => {
  */
 const IsPageLogged = async(req: NextApiRequest, res: NextApiResponse, validateSessionByUuid:Function) => {
     let cookies = new Cookies(req, res)
-    let token = cookies.get("token")
+    let encryptedToken = cookies.get("token")
     let auth:any;
-    if (token === undefined) {
+    if (encryptedToken === undefined) {
         auth = false
     }else{
-        auth = await jwtverify(token)
+        auth = await jwtverify(encryptedToken)
     }
 
 if(validateSessionByUuid){
@@ -118,28 +168,7 @@ if(validateSessionByUuid){
 }
 
 
-// /**
-//  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
-//  * @param req NextApiRequest
-//  * @param res NextApiResponse
-//  * @returns new Promise :- it resolves if the sign in token (cookie is valid and present) else it rejects
-//  */
-// const IsPageLogged = (req: NextApiRequest, res: NextApiResponse) => {
 
-//     return new Promise((resolve, reject) => {
-//         let cookies = new Cookies(req, res)
-//         let token = cookies.get("token")
-//         if (token === undefined) {
-//             reject("Undefined Token")
-//         } else {
-//             jwtverify(token)
-//                 .then(result => resolve(result))
-//                 .catch(err => { reject(err) });
-//         }
-
-
-//     })
-// }
 
 /**
  * check the the perrmited role
@@ -186,15 +215,16 @@ const validateUser = async (req: NextApiRequest, res: NextApiResponse) => {
  * @param req NextApiRequest
  * @param res NextApiResponse
  */
-const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiResponse) => {
-    let cookies = new Cookies(req, res);
-    cookies.set("token", token, {
+const setJwtTokenCookie = (token:string, req:NextApiRequest, res:NextApiResponse) => {
+    const cookies = new Cookies(req, res);
+    const encryptedToken = encrypt(token);
+    cookies.set("token", encryptedToken, {
         httpOnly: true,
         sameSite: true,
-        // secure: process.env.NODE_ENV === "development" ? false : true
-    })
+        // secure: process.env.NODE_ENV === "production",
+    });
+};
 
-}
 
 /**
  * Thi s ;logout by seting token value to ""
@@ -206,4 +236,4 @@ const logout = (req: NextApiRequest, res: NextApiResponse) => {
     cookies.set("token", "");
 }
 
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles }
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt }
