@@ -4,6 +4,10 @@ This module is used for creating jwt based auth in your next js application
 
 To set SECRET_AUTH (consumed by jasonwebtoken). please set environmental variable SECRET_AUTH 
 
+To set Cookie encryption set enviromnetal Variable 
+JWT_ALGO_256_ENCRYPT_KEY || crypto.randomBytes(16).toString("hex")
+JWT_ALGO_256_IV_KEY ||  crypto.randomBytes(8).toString("hex")
+
 To check the implimentation of the module please check from example/test folder from out github repo
 https://github.com/umeshramya/jwt-next-auth.git
 

@@ -11,8 +11,10 @@ const Secret_Auth = process.env.SECRET_AUTH || "ramya darling"
 
 
 // Generate a random key and initialization vector (IV)
-const key = crypto.randomBytes(32); // 256-bit key for AES-256
-const iv = crypto.randomBytes(16); // 16 bytes for AES-CBC
+const algo = 'aes-256-cbc'
+const key = process.env.JWT_ALGO_256_ENCRYPT_KEY || crypto.randomBytes(16).toString("hex")
+const iv = process.env.JWT_ALGO_256_IV_KEY ||  crypto.randomBytes(8).toString("hex")
+
 
 /**
  * Encrypts text using AES-256-CBC
@@ -20,7 +22,7 @@ const iv = crypto.randomBytes(16); // 16 bytes for AES-CBC
  * @returns {string} - Encrypted text in base64 format
  */
 function encrypt(text:string): string {
-    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    const cipher = crypto.createCipheriv(algo, key, iv);
     let encrypted = cipher.update(text, 'utf8', 'base64');
     encrypted += cipher.final('base64');
     return encrypted;
@@ -32,7 +34,7 @@ function encrypt(text:string): string {
  * @returns {string} - Decrypted text in utf-8 format
  */
 function decrypt(encryptedText:string): string {
-    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+    const decipher = crypto.createDecipheriv(algo, key, iv);
     let decrypted = decipher.update(encryptedText, 'base64', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
