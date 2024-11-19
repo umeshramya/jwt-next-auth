@@ -32,7 +32,7 @@ declare const jwtTokenCreate: (payload: {}, validateDays?: number) => Promise<un
  * @param token jsonwebtoen to be  veriied using SECRET_AUTH environmental variaable
  * @returns returns new promise with resolvable decoded.token
  */
-declare const jwtverify: (encryptedToken: any) => Promise<unknown>;
+declare const jwtverify: (encryptedToken: any, encrypted?: boolean) => Promise<unknown>;
 /**
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps
  * @param req NextApiRequest

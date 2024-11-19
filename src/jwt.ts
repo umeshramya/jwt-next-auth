@@ -117,8 +117,15 @@ const jwtTokenCreate = (payload: {}, validateDays: number = 1) => {
 // }
 
 
-const jwtverify = (encryptedToken: any) => {
-    const token:any = decrypt(encryptedToken);
+const jwtverify = (encryptedToken: any, encrypted:boolean=true) => {
+    
+    let token:any 
+    if(encrypted){
+        token=  decrypt(encryptedToken);
+    }else{
+        token = encryptedToken
+    }
+    
     return new Promise((resolve, reject) => {
         jwt.verify(token, Secret_Auth, (err: any, decoded: any) => {
             if (err) {
