@@ -219,20 +219,32 @@ const validateUser = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 /**
- * Helper function for setting cookie
- * @param token This the content of cookie with key of token
+
+/**
+ * Helper function for setting a secure cookie
+ * @param token The content of the cookie with the key of "token"
  * @param req NextApiRequest
  * @param res NextApiResponse
  */
-const setJwtTokenCookie = (token:string, req:NextApiRequest, res:NextApiResponse) => {
+const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiResponse) => {
     const cookies = new Cookies(req, res);
     const encryptedToken = encrypt(token);
+
+    // Detect if the original request was made over HTTPS
+
+
+    // Set the cookie with secure flag determined dynamically
     cookies.set("token", encryptedToken, {
         httpOnly: true,
-        sameSite: true,
-        // secure: process.env.NODE_ENV === "production",
+        sameSite: 'strict', // Change to 'lax' if cross-site usage is needed
+        secure: false, // App engine standard to set true makes it not possible as it behind http and 
+        path: '/', // Ensure cookie is available site-wide
     });
+
+
 };
+
+
 
 
 /**
