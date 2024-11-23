@@ -33,16 +33,20 @@ const protectedRouteMaster = (route: Function, permitedRoles?: string[], authVer
         const verified:boolean = await authVerify(auth, req, res)
         if(!verified){
           statusCode = 403;
-          throw (new Error().message = "Forbidden");
+          throw new Error("Forbidden: User verification failed");
         }
       }
 
       if (permitedRoles !== undefined) {
         if (permitedRoles.indexOf(auth.role) < 0) {
           statusCode = 403;
-          throw (new Error().message = "Forbidden");
+          throw new Error("Forbidden: Role not permitted");
         }
       }
+        // Add HSTS header only in production
+        if (process.env.NODE_ENV === "production") {
+          res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+        }
       let routeReturn = await route(req, res, body, auth);
     } catch (error) {
       res.status(statusCode).send(error);
