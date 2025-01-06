@@ -18,7 +18,7 @@ declare function decrypt(encryptedText: string): string;
  * @param res This is the response of NextApiResponse
  * @returns This return the new promise which has to resolved thus it seting  the server side cookie with key token and value jsowebtoken. further it return the jsonwebtoken as string.
  */
-declare const jwtSign: (payload: {}, req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
+declare const jwtSign: (payload: {}, req: NextApiRequest, res: NextApiResponse, encryption?: boolean) => Promise<unknown>;
 /**
  * Helper function for creating jsonweb token usin AUTH_SECRET environmental variable
  * This can be used to create new json token from client application apart sign in token

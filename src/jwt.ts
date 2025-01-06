@@ -49,7 +49,7 @@ function decrypt(encryptedText:string): string {
  * @param res This is the response of NextApiResponse
  * @returns This return the new promise which has to resolved thus it seting  the server side cookie with key token and value jsowebtoken. further it return the jsonwebtoken as string.
  */
-const jwtSign = (payload: {}, req: NextApiRequest, res: NextApiResponse) => {
+const jwtSign = (payload: {}, req: NextApiRequest, res: NextApiResponse, encryption:boolean = false) => {
     // this fun is for only creating login jwt 
 
     return new Promise((resolve, reject) => {
@@ -59,7 +59,7 @@ const jwtSign = (payload: {}, req: NextApiRequest, res: NextApiResponse) => {
             } else if (token === undefined) {
                 reject("token is undefined")
             } else {
-                setJwtTokenCookie(token, req, res);
+                setJwtTokenCookie(token, req, res, encryption);
                 resolve(token)
             }
         });
@@ -117,7 +117,7 @@ const jwtTokenCreate = (payload: {}, validateDays: number = 1) => {
 // }
 
 
-const jwtverify = (encryptedToken: any, encrypted:boolean=true) => {
+const jwtverify = (encryptedToken: any, encrypted:boolean=false) => {
     
     let token:any 
     if(encrypted){
@@ -225,10 +225,11 @@ const validateUser = async (req: NextApiRequest, res: NextApiResponse) => {
  * @param token The content of the cookie with the key of "token"
  * @param req NextApiRequest
  * @param res NextApiResponse
+ * @param encryption boolean 
  */
-const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiResponse) => {
+const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiResponse, encryption:boolean) => {
     const cookies = new Cookies(req, res);
-    const encryptedToken = encrypt(token);
+    const encryptedToken = encryption ?  encrypt(token) : token;
 
     // Detect if the original request was made over HTTPS
 
