@@ -27,11 +27,6 @@ declare const jwtSign: (payload: {}, req: NextApiRequest, res: NextApiResponse, 
  * @returns returns a promise with resolveble jsonwebtoken
  */
 declare const jwtTokenCreate: (payload: {}, validateDays?: number) => Promise<unknown>;
-/**
- * Helper function for  jwtiverfy
- * @param token jsonwebtoen to be  veriied using SECRET_AUTH environmental variaable
- * @returns returns new promise with resolvable decoded.token
- */
 declare const jwtverify: (encryptedToken: any, encrypted?: boolean) => Promise<unknown>;
 /**
  * This is funtion which has to be exucuted in getServerSideProps or getStaticProps

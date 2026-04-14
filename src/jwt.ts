@@ -95,26 +95,7 @@ const jwtTokenCreate = (payload: {}, validateDays: number = 1) => {
 }
 
 
-/**
- * Helper function for  jwtiverfy
- * @param token jsonwebtoen to be  veriied using SECRET_AUTH environmental variaable
- * @returns returns new promise with resolvable decoded.token
- */
-// const jwtverify = (token: string) => {
-//     // this verify the token
-//     return new Promise((resolve, reject) => {
-//         jwt.verify(token, Secret_Auth, (err, decoded: any) => {
-//             if (err) {
-//                 reject(false)
-//             } else if (decoded === undefined) {
-//                 reject('invalid token')
-//             } else {
-//                 decoded.token = token
-//                 resolve(decoded)
-//             }
-//         })
-//     })
-// }
+
 
 
 const jwtverify = (encryptedToken: any, encrypted:boolean=false) => {
@@ -227,23 +208,42 @@ const validateUser = async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res NextApiResponse
  * @param encryption boolean 
  */
-const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiResponse, encryption:boolean) => {
-    const cookies = new Cookies(req, res);
-    const encryptedToken = encryption ?  encrypt(token) : token;
 
-    // Detect if the original request was made over HTTPS
+const setJwtTokenCookie = (
+  token: string,
+  req: NextApiRequest,
+  res: NextApiResponse,
+  encryption: boolean
+) => {
+  const cookies = new Cookies(req, res);
+  const encryptedToken = encryption ? encrypt(token) : token;
 
+  const isProd = process.env.NODE_ENV === "production";
 
-    // Set the cookie with secure flag determined dynamically
-    cookies.set("token", encryptedToken, {
-        httpOnly: true,
-        sameSite: 'strict', // Change to 'lax' if cross-site usage is needed
-        secure: false, // App engine standard to set true makes it not possible as it behind http and 
-        path: '/', // Ensure cookie is available site-wide
-    });
-
-
+  cookies.set("token", encryptedToken, {
+    httpOnly: true,
+    sameSite: isProd ? "none" : "lax",  // ✅ FIX
+    secure: false,                     // ✅ FIX
+    path: "/",
+  });
 };
+// const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiResponse, encryption:boolean) => {
+//     const cookies = new Cookies(req, res);
+//     const encryptedToken = encryption ?  encrypt(token) : token;
+
+//     // Detect if the original request was made over HTTPS
+
+
+//     // Set the cookie with secure flag determined dynamically
+//     cookies.set("token", encryptedToken, {
+//         httpOnly: true,
+//         sameSite: 'strict', // Change to 'lax' if cross-site usage is needed
+//         secure: false, // App engine standard to set true makes it not possible as it behind http and 
+//         path: '/', // Ensure cookie is available site-wide
+//     });
+
+
+// };
 
 
 
