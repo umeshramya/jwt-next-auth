@@ -108,7 +108,7 @@ const jwtverify = (encryptedToken: any, encrypted:boolean=false) => {
     }
     
     return new Promise((resolve, reject) => {
-        jwt.verify(token, Secret_Auth, (err: any, decoded: any) => {
+        jwt.verify(token, Secret_Auth, { algorithms: ['HS256'] }, (err: any, decoded: any) => {
             if (err) {
                 reject(false);
             } else if (decoded === undefined) {
@@ -231,15 +231,14 @@ const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiRespo
     const cookies = new Cookies(req, res);
     const encryptedToken = encryption ?  encrypt(token) : token;
 
-    // Detect if the original request was made over HTTPS
-    // App Engine terminates HTTPS at the load balancer, so check x-forwarded-proto
-    const isSecure = req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production';
-
-    // Set the cookie with secure flag determined dynamically
+    // NOTE: secure: false is intentional for GCP App Engine.
+    // App Engine terminates HTTPS at the load balancer, so the Node runtime
+    // receives plain HTTP. The `cookies` library throws if we set secure:true
+    // over an unencrypted connection. The browser still sees HTTPS from the LB.
     cookies.set("token", encryptedToken, {
         httpOnly: true,
         sameSite: 'strict',
-        secure: isSecure,
+        secure: false,
         path: '/',
     });
 
@@ -259,4 +258,13 @@ const logout = (req: NextApiRequest, res: NextApiResponse) => {
     cookies.set("token", "");
 }
 
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt }
+const handleApiError = (res: NextApiResponse, error: unknown, statusCode: number = 500, safeMessage?: string) => {
+    console.error(`[API Error ${statusCode}]`, error);
+    res.status(statusCode).json({ error: safeMessage ?? "Internal Server Error" });
+}
+
+const sendApiError = (res: NextApiResponse, statusCode: number, message: string) => {
+    res.status(statusCode).json({ error: message });
+}
+
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt, handleApiError, sendApiError }
