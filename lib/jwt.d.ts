@@ -56,5 +56,7 @@ declare const validateUser: (req: NextApiRequest, res: NextApiResponse) => Promi
  * @param res NextApiResponse
  */
 declare const logout: (req: NextApiRequest, res: NextApiResponse) => void;
-export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt };
+declare const handleApiError: (res: NextApiResponse, error: unknown, statusCode?: number, safeMessage?: string | undefined) => void;
+declare const sendApiError: (res: NextApiResponse, statusCode: number, message: string) => void;
+export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt, handleApiError, sendApiError };
 //# sourceMappingURL=jwt.d.ts.map
