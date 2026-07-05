@@ -260,11 +260,11 @@ const logout = (req: NextApiRequest, res: NextApiResponse) => {
 
 const handleApiError = (res: NextApiResponse, error: unknown, statusCode: number = 500, safeMessage?: string) => {
     console.error(`[API Error ${statusCode}]`, error);
-    res.status(statusCode).json({ error: safeMessage ?? "Internal Server Error" });
+    res.status(statusCode).send(safeMessage ?? "Internal Server Error");
 }
 
 const sendApiError = (res: NextApiResponse, statusCode: number, message: string) => {
-    res.status(statusCode).json({ error: message });
+    res.status(statusCode).send(message);
 }
 
 export { jwtSign, jwtverify, IsPageLogged, validateUser, jwtTokenCreate, logout, checkRoles, encrypt, decrypt, handleApiError, sendApiError }

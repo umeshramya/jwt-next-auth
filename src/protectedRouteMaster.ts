@@ -50,7 +50,7 @@ const protectedRouteMaster = (route: Function, permitedRoles?: string[], authVer
       let routeReturn = await route(req, res, body, auth);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      res.status(statusCode).json({ error: message });
+      res.status(statusCode).send(message);
     }
   };
 };
