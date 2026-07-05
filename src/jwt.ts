@@ -260,7 +260,14 @@ const logout = (req: NextApiRequest, res: NextApiResponse) => {
 
 const handleApiError = (res: NextApiResponse, error: unknown, statusCode: number = 500, safeMessage?: string) => {
     console.error(`[API Error ${statusCode}]`, error);
-    res.status(statusCode).send(safeMessage ?? "Internal Server Error");
+    // Strings are intentional business-logic throws (antipattern). Pass through.
+    // Error.message is developer-written (no dynamic input in this codebase). Pass through.
+    // Unknown types — hide behind generic message.
+    const message = safeMessage ??
+        (typeof error === "string" ? error :
+         error instanceof Error ? error.message :
+         "Internal Server Error");
+    res.status(statusCode).send(message);
 }
 
 const sendApiError = (res: NextApiResponse, statusCode: number, message: string) => {
