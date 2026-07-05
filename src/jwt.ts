@@ -232,14 +232,15 @@ const setJwtTokenCookie = (token: string, req: NextApiRequest, res: NextApiRespo
     const encryptedToken = encryption ?  encrypt(token) : token;
 
     // Detect if the original request was made over HTTPS
-
+    // App Engine terminates HTTPS at the load balancer, so check x-forwarded-proto
+    const isSecure = req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production';
 
     // Set the cookie with secure flag determined dynamically
     cookies.set("token", encryptedToken, {
         httpOnly: true,
-        sameSite: 'strict', // Change to 'lax' if cross-site usage is needed
-        secure: false, // App engine standard to set true makes it not possible as it behind http and 
-        path: '/', // Ensure cookie is available site-wide
+        sameSite: 'strict',
+        secure: isSecure,
+        path: '/',
     });
 
 
