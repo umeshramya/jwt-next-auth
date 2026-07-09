@@ -7,7 +7,10 @@ import crypto from "crypto";
 
 
 
-const Secret_Auth = process.env.SECRET_AUTH || "ramya darling"
+if (!process.env.SECRET_AUTH) {
+  throw new Error("SECRET_AUTH environment variable is required");
+}
+const Secret_Auth = process.env.SECRET_AUTH
 
 
 // Generate a random key and initialization vector (IV)
@@ -137,7 +140,11 @@ const IsPageLogged = async(req: NextApiRequest, res: NextApiResponse, validateSe
     if (encryptedToken === undefined) {
         auth = false
     }else{
-        auth = await jwtverify(encryptedToken)
+        try {
+          auth = await jwtverify(encryptedToken)
+        } catch(e) {
+          auth = false
+        }
     }
 
 if(validateSessionByUuid){
@@ -146,8 +153,8 @@ if(validateSessionByUuid){
         if(!validateSession){
             auth = false
         }
-    } 
-}  
+    }
+}
     return new Promise((resolve, reject)=>{
         if(auth){
             resolve(auth)
